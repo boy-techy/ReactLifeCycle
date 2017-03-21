@@ -4,6 +4,10 @@
 
 import  React,{Component} from 'react';
 
-export  default class Home extends Component{
-    g
-}
+const Home=()=>(
+    <div>
+        Home Componet
+    </div>
+);
+
+export  default Home;
