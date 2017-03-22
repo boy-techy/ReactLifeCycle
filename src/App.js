@@ -54,7 +54,7 @@ class App extends Component {
 
     }
 
-    deleteTask=(index)=>{
+    deleteTask = index => {
         let {todo:temp_todo}=this.state;
         temp_todo = temp_todo.filter((val,i)=>{
             if(i!=index){
@@ -68,7 +68,8 @@ class App extends Component {
         });
     }
 
-    toggle=(index)=>{
+    toggle = index => {
+        console.log(this.state);
         const {todo:temp_todo}=this.state;
         let tempObj=Object.assign([],temp_todo,{[index]:Object.assign({},temp_todo[index],{hide:!temp_todo[index].hide})})
         this.setState({
@@ -77,18 +78,18 @@ class App extends Component {
     }
 
   render() {
-
+    const {addHide, todo} = this.state;
     return (
       <div className="mainContainer">
           <div id="heading">ToDo App</div>
 
           <div><button id="AddButton" onClick={()=>{
-              this.setState({addHide:!this.state.addHide})
+              this.setState({addHide:!addHide})
             }}>Add</button></div>
 
-          <ToDoList todo={this.state.todo} toggle={this.toggle} updateTodo={this.updateTodo} deleteTask={this.deleteTask} changeStatus={this.changeStatus}/>
-
-          <NewToDo addNew={this.addNew} addHide={this.state.addHide}/>
+          <ToDoList todo={todo} toggle={this.toggle} updateTodo={this.updateTodo} deleteTask={this.deleteTask} changeStatus={this.changeStatus}/>
+          {addHide?
+            <NewToDo addNew={this.addNew}/>:<span></span>}
       </div>
     );
   }

@@ -35,15 +35,13 @@ export default class NewToDo extends Component{
     render(){
         return(
             <div>
-                {   !this.props.addHide ? (
-                        <form onSubmit={this.addToDo}>
-                            <label>Task Name:</label>
-                            <input type="text" name="name" onChange={this.inputTextHandler}/>
-                            <label>Task Date:</label>
-                            <input type="date" name="date" onChange={this.inputTextHandler} />
-                            <input type="submit" value="Add"/>
-                        </form>):<div></div>
-                }
+                <form onSubmit={this.addToDo}>
+                    <label>Task Name:</label>
+                    <input type="text" name="name" value={this.state.name} onChange={ this.inputTextHandler}/>
+                    <label>Task Date:</label>
+                    <input type="date" name="date" value={this.state.date} onChange={this.inputTextHandler} />
+                    <input type="submit" value="Add"/>
+                </form>
             </div>
         )
     }
