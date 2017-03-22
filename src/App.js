@@ -1,100 +1,98 @@
 import React, { Component } from 'react';
 import './App.css';
+import ToDoList from './ToDoList';
+import NewToDo from  './NewToDo';
 
 class App extends Component {
-    constructor(){
-        super();
-        this.state={
-            todo:[{
-                name:'',
-                date:'',
-                status:'',
-                check:'',
-            }]
+    constructor(props) {
+        super(props);
+        this.state = {
+            todo: [],
+            addHide:false,
         }
+
+        this.updateTodo = this.updateTodo.bind(this);
+        this.toggle = this.toggle.bind(this);
+        this.addNew = this.addNew.bind(this);
+        this.deleteTask = this.deleteTask.bind(this);
+        this.changeStatus = this.changeStatus.bind(this);
+        //Method For Auto Bind With this Reference to Manage this.state
+
+
     }
     addNew=(new_todo)=>{
+
         this.setState({
            todo:[...this.state.todo,new_todo],
+            addHide:true,
         });
     }
+
+
+    changeStatus=(index)=>{
+        const {todo:temp_todo}=this.state;
+        let tempObj=Object.assign([],temp_todo,{[index]:Object.assign({},temp_todo[index],{status:"Complete",check:true})})
+        this.setState({
+            todo:tempObj,
+        })
+    }
+
+    updateTodo=(index,newObj)=>{
+        const {todo}=this.state;
+        newObj=Object.assign({},newObj,{status:todo[index].status,
+            check:todo[index].check,
+            hide:todo[index].hide}
+        );
+        let temp_obj=Object.assign([],todo,{[index]:newObj});
+
+        this.setState({
+            todo:temp_obj
+        },() => {
+            this.toggle(index);
+        })
+
+
+    }
+
+    deleteTask=(index)=>{
+        let {todo:temp_todo}=this.state;
+        temp_todo = temp_todo.filter((val,i)=>{
+            if(i!=index){
+                return val;
+            }
+        });
+
+
+        this.setState({
+            todo:temp_todo,
+        });
+    }
+
+    toggle=(index)=>{
+        const {todo:temp_todo}=this.state;
+        let tempObj=Object.assign([],temp_todo,{[index]:Object.assign({},temp_todo[index],{hide:!temp_todo[index].hide})})
+        this.setState({
+            todo:tempObj,
+        })
+    }
+
   render() {
 
     return (
-      <div id="mainContainer">
-          <button>Add</button>
-          <ToDoList todo={this.state.todo}/>
-          <NewToDo addNew={this.addNew}/>
+      <div className="mainContainer">
+          <div id="heading">ToDo App</div>
+
+          <div><button id="AddButton" onClick={()=>{
+              this.setState({addHide:!this.state.addHide})
+            }}>Add</button></div>
+
+          <ToDoList todo={this.state.todo} toggle={this.toggle} updateTodo={this.updateTodo} deleteTask={this.deleteTask} changeStatus={this.changeStatus}/>
+
+          <NewToDo addNew={this.addNew} addHide={this.state.addHide}/>
       </div>
     );
   }
 }
 
-
-class ToDoList extends Component{
-
-
-    render(){
-        let todoList=this.props.todo.map((val,i)=>{
-            return (<tr key={i}>
-                        <td>{val.name}</td>
-                        <td>{val.date}</td>
-                        <td>{val.status}</td>
-                        <td><input type="checkbox" /></td>
-                        <td><span className="glyphicon glyphicon-plus"></span></td>
-                        <td><span className="glyphicon glyphicon-pencil"></span></td>
-                    </tr>);
-        });
-        return(
-          <div>
-            <table>
-                <tbody>
-                {todoList}
-                </tbody>
-            </table>
-          </div>
-        );
-    }
-
-}
-
-class NewToDo extends Component{
-
-    constructor(){
-       super();
-       this.state={
-           new_todo:{
-               name:'',
-               date:'',
-               status:'Pending',
-               check:''
-           }
-       }
-    }
-    addToDo=(e)=>{
-        e.preventDefault();
-        this.setState({
-           hide:true,
-        });
-        this.props.addNew(this.state.new_todo);
-    }
-    render(){
-        return(
-            <div>
-                {   !this.state.hide ? (
-                    <form onSubmit={this.addToDo}>
-                        <label>Name:</label>
-                        <input type="text" value={this.state.new_todo.name.value} onChange={(e) => {
-                            this.state.new_todo.name = e.target.value
-                        }}/>
-                        <label>Date:</label>
-                        <input type="date"/>
-                        <input type="submit" value="Add"/>
-                    </form>):<div></div>
-                }
-            </div>
-        )
-    }
-}
 
 export default App;

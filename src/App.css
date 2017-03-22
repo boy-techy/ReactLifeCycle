@@ -1,8 +1,24 @@
 .App {
   text-align: center;
 }
-#mainContainer{
-  width: 1000px;
+#AddButton{
+    background-color: green;
+    border: 0px;
+    width: 30%;
+    height: 4em;
+}
+#AddButton:hover{
+    background-color: darkgreen;
+}
+#heading{
+    font-size: 4pc;
+    text-align: center;
+    background-color: #ff8889;
+}
+.mainContainer{
+    margin: auto;
+    width: 400px;
+    border:1px solid #ff8889;
 }
 
 form {
