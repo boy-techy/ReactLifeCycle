@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import EditButton from './EditButton';
+import Row from './Row';
 
 export default class ToDoList extends Component {
 
@@ -11,25 +11,7 @@ export default class ToDoList extends Component {
     render() {
         let todoList = this.props.todo.map((val, i) => {
             return (
-                val.hide ?
-                    <tr key={i}>
-                        <td>{val.name}</td>
-                        <td>{val.date}</td>
-                        <td>{val.status}</td>
-                        <td><input type="checkbox" checked={val.check} disabled= {val.check}
-                                   onChange={() => this.props.changeStatus(i)}/></td>
-                        <td>
-                            <button onClick={() => {
-                                this.props.toggle(i)
-                            }}>Edit
-                            </button>
-                        </td>
-                        <td>
-                            <button onClick={() => this.props.deleteTask(i)}>Delete</button>
-                        </td>
-                    </tr>
-                    : //Or Condition (false)
-                    <EditButton val={val} index={i} updateTodo={this.props.updateTodo} toggle ={this.props.toggle}/>
+                <Row currentRow={val} index={i}/>
             )
         });
         return (
@@ -43,7 +25,4 @@ export default class ToDoList extends Component {
         );
     }
 
-}
-ToDoList.defaultProps={
-    todo:[],
 }
